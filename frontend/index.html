@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceGuard India â€” Revenue Intelligence for SaaS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="bg">
+        <video class="bg-video" autoplay muted loop playsinline>
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_075824_7c8a2ef3-826c-43ca-81a1-162429faa306.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="page hero-page">
+        <header class="nav">
+            <a class="logo" href="index.html" aria-label="VoiceGuard India" style="justify-self: start;">
+                <img src="logo.png" alt="VoiceGuard India Logo" class="logo__img">
+            </a>
+
+                    <nav class="nav__links" aria-label="Primary">
+            <a href="platform.html" style="animation-delay: 0.02s">Platform</a>
+            <a href="solutions.html" style="animation-delay: 0.08s">Solutions</a>
+            <a href="company.html" style="animation-delay: 0.14s">Company</a>
+            <a href="pricing.html" style="animation-delay: 0.2s">Pricing</a>
+            <a href="contact.html" style="animation-delay: 0.26s">Contact</a>
+        </nav>
+
+            <a href="admin.html" class="btn btn--nav wipe-nav" style="animation-delay: 0.3s; justify-self: end;"><span>Admin Demo</span><div class="btn-icon-sq"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></a>
+
+            <button class="nav__burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" style="justify-self: end;">
+                <span></span><span></span><span></span>
+            </button>
+        </header>
+
+        <div id="mobile-menu" hidden>
+                    <div class="mobile-menu__links">
+            <a href="platform.html">Platform</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="company.html">Company</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="contact.html">Contact</a>
+            <a href="admin.html" style="color: var(--blue);">Admin Demo</a>
+        </div>
+        </div>
+
+        <main class="hero">
+            <div class="badge wipe" style="--d: 0.18s">
+                <div class="badge-sq"></div>
+                <span>Real-Time Audio Deepfake Detection</span>
+            </div>
+
+            <div id="fluid-text-container" style="width: 100%; height: 280px; position: relative; margin: 20px 0; max-width: 100vw; z-index: 10;">
+                <canvas id="fluid-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; pointer-events: none;"></canvas>
+            </div>
+
+            <div class="hero__actions">
+                <button class="btn btn--ghost wipe" style="--d: 0.66s">
+                    <span>See VoiceGuard in Action</span>
+                </button>
+            </div>
+        </main>
+
+        <p class="lede">
+            <span class="lede__mask">
+                <span class="lede__rise" style="--d: 0.78s">VoiceGuard India continuously analyzes audio frequencies and artifacts to identify AI manipulation, prevent voice spoofing attacks, and recommend real-time security actions for your communication infrastructure.</span>
+            </span>
+        </p>
+    </div>
+
+    <section class="content-section content-section--glass">
+        <div class="section-header">
+            <h2>Next-generation protection against voice cloning</h2>
+            <p>Our platform uses advanced waveform analysis to instantly verify the authenticity of incoming audio across all enterprise channels.</p>
+        </div>
+        <div class="grid-cards">
+            <div class="card">
+                <div class="card-icon card-icon--green">
+                    <!-- Iconoir: Dollar -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor">
+                        <path d="M12 2v20M16 6.5h-5.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+                <h3>Financial Security</h3>
+                <p>Prevent fraudulent voice cloning attacks targeting telebanking authorization flows and high-value internal transactions.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon card-icon--orange">
+                    <!-- Iconoir: Multi-window / Stack / Layers -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor">
+                        <path d="M2 14.5l10 5 10-5M2 19.5l10 5 10-5M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+                <h3>Call Center Integration</h3>
+                <p>Seamlessly scan live calls via API to warn agents of synthetic speech and AI-generated imposters in under 200ms.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon card-icon--blue">
+                    <!-- Iconoir: Refresh / Sync -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor">
+                        <path d="M21.888 10.5C21.164 5.688 17.013 2 12 2 6.477 2 2 6.477 2 12s4.477 10 10 10c4.1 0 7.625-2.468 9.168-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M17 16h5v5M7 8H2V3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+                <h3>Continuous Learning</h3>
+                <p>Our models adapt to new generative AI updates immediately, ensuring your defense evolves faster than the threats.</p>
+            </div>
+        </div>
+    </section>
+
+        <section class="content-section">
+        <div class="section-header">
+            <h2>Unprecedented Adoption</h2>
+            <p>VoiceGuard is protecting an exponentially growing number of enterprise users every single month.</p>
+        </div>
+        <div class="card" style="max-width: 900px; margin: 0 auto; padding: 2rem; background: rgba(0, 0, 0, 0.2); border: none; box-shadow: none;">
+            <canvas id="growthChart" style="width: 100%; height: 400px;"></canvas>
+        </div>
+    </section>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            
+            // Create gradient
+            let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(0, 108, 210, 0.95)');
+            gradient.addColorStop(1, 'rgba(0, 45, 110, 0.65)');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Monthly Active Users',
+                        data: [12000, 15500, 21000, 38500, 56800, 81200],
+                        backgroundColor: gradient,
+                        borderRadius: 40,
+                        barPercentage: 0.6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        });
+    </script>
+    <footer class="footer">
+        <p>&copy; 2026 VoiceGuard India. All rights reserved.</p>
+        <p>Security without compromise.</p>
+    </footer>
+
+    <script src="fluid-text.js?v=2"></script>`n    <script src="main.js"></script>
+<script src="cursor-ring.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

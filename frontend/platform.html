@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform â€” VoiceGuard India</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="bg">
+        <video class="bg-video" autoplay muted loop playsinline>
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_075824_7c8a2ef3-826c-43ca-81a1-162429faa306.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- INNER PAGE HERO -->
+    <div class="page inner-page">
+        <header class="nav">
+            <a class="logo" href="index.html" aria-label="VoiceGuard India">
+                <img src="logo.png" alt="VoiceGuard India Logo" class="logo__img">
+            </a>
+
+                    <nav class="nav__links" aria-label="Primary">
+            <a href="platform.html" style="animation-delay: 0.02s">Platform</a>
+            <a href="solutions.html" style="animation-delay: 0.08s">Solutions</a>
+            <a href="company.html" style="animation-delay: 0.14s">Company</a>
+            <a href="pricing.html" style="animation-delay: 0.2s">Pricing</a>
+            <a href="contact.html" style="animation-delay: 0.26s">Contact</a>
+        </nav>
+
+            <a href="admin.html" class="btn btn--nav wipe-nav" style="animation-delay: 0.3s; justify-self: end;"><span>Admin Demo</span><div class="btn-icon-sq"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></a>
+
+            <button class="nav__burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+                <span></span><span></span><span></span>
+            </button>
+        </header>
+
+        <div id="mobile-menu" hidden>
+                    <div class="mobile-menu__links">
+            <a href="platform.html">Platform</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="company.html">Company</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="contact.html">Contact</a>
+            <a href="admin.html" style="color: var(--blue);">Admin Demo</a>
+        </div>
+        </div>
+
+        <main class="hero inner-hero">
+            <div class="badge wipe" style="--d: 0.18s">
+                <div class="badge-sq"></div>
+                <span>Architecture</span>
+            </div>
+            <div class="fluid-text-container" style="width: 100%; height: 160px; position: relative; margin: 10px 0; max-width: 100vw; z-index: 10;">
+                <canvas class="fluid-canvas" data-fluid-text="Built for absolute scale." data-fluid-align="left" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; pointer-events: none;"></canvas>
+            </div>
+        </main>
+    </div>
+
+    <section class="content-section content-section--glass">
+        <div class="section-header">
+            <h2>Deep Analysis Engine</h2>
+            <p>Our platform runs passively on your existing VoIP or telephony infrastructure, creating zero latency overhead for agents while scanning thousands of concurrent audio streams.</p>
+        </div>
+        <div class="grid-cards">
+            <div class="card">
+                <div class="card-icon card-icon--blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+                <h3>Spectral Analysis</h3>
+                <p>Detects imperceptible artifacts left behind by common TTS and voice cloning engines.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon card-icon--blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+                <h3>Liveness Detection</h3>
+                <p>Cross-references breathing patterns and natural micro-hesitations to confirm human speech.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon card-icon--blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                <h3>API-First Delivery</h3>
+                <p>Easily integrates into SIP trunks, Twilio, Amazon Connect, and custom WebRTC apps.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 VoiceGuard India. All rights reserved.</p>
+        <p>Security without compromise.</p>
+    </footer>
+    <script src="fluid-text.js?v=2"></script>
+    <script src="main.js"></script>
+<script src="cursor-ring.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

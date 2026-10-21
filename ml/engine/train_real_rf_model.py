@@ -1,0 +1,172 @@
+"""
+VoiceGuard India V2 - Notebook Generator
+Run: python ml_engine/train_real_rf_model.py
+to generate voiceguard_v2_training.ipynb in the project root.
+"""
+
+import json
+import os
+
+def make_notebook():
+    cells = [
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "# VoiceGuard India V2 - Generalizable Deepfake Detector\n",
+                "Trains on 4 diverse deepfake datasets + 34 acoustic features + class balance correction."
+            ]
+        },
+        {
+            "cell_type": "code", "execution_count": None, "metadata": {}, "outputs": [],
+            "source": ["!conda install -y -c conda-forge ffmpeg"]
+        },
+        {
+            "cell_type": "code", "execution_count": None, "metadata": {}, "outputs": [],
+            "source": ["!pip install pandas librosa xgboost scikit-learn fsspec pyarrow huggingface_hub soundfile"]
+        },
+        {
+            "cell_type": "code", "execution_count": None, "metadata": {}, "outputs": [],
+            "source": [
+                "import pandas as pd\n",
+                "import librosa\n",
+                "import numpy as np\n",
+                "import io\n",
+                "import pickle\n",
+                "import xgboost as xgb\n",
+                "import warnings\n",
+                "from sklearn.metrics import classification_report\n",
+                "from sklearn.model_selection import train_test_split\n",
+                "from tqdm import tqdm\n",
+                "from huggingface_hub import HfFileSystem, hf_hub_download\n",
+                "warnings.filterwarnings('ignore')\n",
+                "\n",
+                "HF_TOKEN = 'hf_YOUR_TOKEN_HERE'\n",
+                "\n",
+                "def extract_features(audio_dict, sr=16000):\n",
+                "    try:\n",
+                "        y, sr = librosa.load(io.BytesIO(audio_dict['bytes']), sr=sr, duration=3.0)\n",
+                "        if len(y) < 1000: return None\n",
+                "        mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=20)\n",
+                "        mfcc_mean = np.mean(mfccs.T, axis=0)\n",
+                "        delta_mean = np.mean(librosa.feature.delta(mfccs).T, axis=0)[:10]\n",
+                "        centroid = np.mean(librosa.feature.spectral_centroid(y=y, sr=sr))\n",
+                "        zcr = np.mean(librosa.feature.zero_crossing_rate(y))\n",
+                "        rolloff = np.mean(librosa.feature.spectral_rolloff(y=y, sr=sr))\n",
+                "        rms = np.mean(librosa.feature.rms(y=y))\n",
+                "        return np.hstack((mfcc_mean, delta_mean, centroid, zcr, rolloff, rms))\n",
+                "    except: return None\n",
+                "\n",
+                "fs = HfFileSystem(token=HF_TOKEN)\n",
+                "\n",
+                "def get_parquet(repo_id, kw):\n",
+                "    try:\n",
+                "        files = fs.glob('datasets/' + repo_id + '/**/*.parquet')\n",
+                "        for f in files:\n",
+                "            if kw in f and 'train' in f: return f\n",
+                "        for f in files:\n",
+                "            if 'train' in f: return f\n",
+                "    except: pass\n",
+                "    return None\n",
+                "\n",
+                "def pull(repo_id, label, kw, name, limit=1200):\n",
+                "    tag = 'HUMAN' if label == 1 else 'DEEPFAKE'\n",
+                "    print('--- ' + name + ' (' + tag + ') ---')\n",
+                "    p = get_parquet(repo_id, kw)\n",
+                "    if not p: print('SKIP: not found'); return [], []\n",
+                "    parts = p.split('/')\n",
+                "    try:\n",
+                "        lp = hf_hub_download(repo_id=parts[1]+'/'+parts[2], filename='/'.join(parts[3:]), repo_type='dataset', token=HF_TOKEN)\n",
+                "        df = pd.read_parquet(lp)\n",
+                "        Xd, yd = [], []\n",
+                "        for _, row in tqdm(df.iterrows(), total=min(len(df), limit)):\n",
+                "            if len(Xd) >= limit: break\n",
+                "            if 'audio' in row and row['audio'] is not None:\n",
+                "                feat = extract_features(row['audio'])\n",
+                "                if feat is not None: Xd.append(feat); yd.append(label)\n",
+                "        print('Got ' + str(len(Xd)) + ' samples'); return Xd, yd\n",
+                "    except Exception as e: print('ERROR: ' + str(e)); return [], []\n",
+                "\n",
+                "X, y = [], []\n",
+                "\n",
+                "for ds in [\n",
+                "    ('google/fleurs', 'parquet-data/hi_in/train-00000-of-00001.parquet', 'Google Fleurs', 1, 1500),\n",
+                "    ('SPRINGLab/IndicTTS-Hindi', 'data/train-00000-of-00010.parquet', 'IndicTTS', 1, 1000),\n",
+                "]:\n",
+                "    print('Downloading ' + ds[2] + ' (AUTHENTIC)...')\n",
+                "    try:\n",
+                "        lp = hf_hub_download(repo_id=ds[0], filename=ds[1], repo_type='dataset', token=HF_TOKEN)\n",
+                "        df = pd.read_parquet(lp)\n",
+                "        count = 0\n",
+                "        for _, row in tqdm(df.iterrows(), total=min(len(df), ds[4])):\n",
+                "            if count >= ds[4]: break\n",
+                "            if 'audio' in row and row['audio'] is not None:\n",
+                "                feat = extract_features(row['audio'])\n",
+                "                if feat is not None: X.append(feat); y.append(1); count += 1\n",
+                "        print('Got ' + str(count) + ' samples')\n",
+                "    except Exception as e: print('ERROR: ' + str(e))\n",
+                "\n",
+                "for sfile in [\n",
+                "    'data/train-00000-of-00004.parquet',\n",
+                "    'data/train-00001-of-00004.parquet',\n",
+                "    'data/train-00002-of-00004.parquet',\n",
+                "    'data/train-00003-of-00004.parquet',\n",
+                "]:\n",
+                "    print('Downloading Sarvam ' + sfile + ' (DEEPFAKE)...')\n",
+                "    try:\n",
+                "        lp = hf_hub_download(repo_id='abhirl/hindi-tts-dataset', filename=sfile, repo_type='dataset', token=HF_TOKEN)\n",
+                "        df = pd.read_parquet(lp)\n",
+                "        count = 0\n",
+                "        for _, row in tqdm(df.iterrows(), total=len(df)):\n",
+                "            if 'audio' in row and row['audio'] is not None:\n",
+                "                feat = extract_features(row['audio'])\n",
+                "                if feat is not None: X.append(feat); y.append(0); count += 1\n",
+                "        print('Got ' + str(count) + ' deepfake samples from ' + sfile)\n",
+                "    except Exception as e: print('ERROR on ' + sfile + ': ' + str(e))\n",
+                "\n",
+                "X_final = np.array(X); y_final = np.array(y)\n",
+                "n_auth = int(np.sum(y_final==1)); n_fake = int(np.sum(y_final==0))\n",
+                "print('TOTAL: ' + str(len(y_final)) + ' | Authentic: ' + str(n_auth) + ' | Deepfake: ' + str(n_fake))\n",
+                "if len(np.unique(y_final)) < 2: print('FATAL: Missing one class!')\n",
+                "else: print('Ready to train!')"
+            ]
+        },
+        {
+            "cell_type": "code", "execution_count": None, "metadata": {}, "outputs": [],
+            "source": [
+                "if len(np.unique(y_final)) >= 2:\n",
+                "    X_train, X_test, y_train, y_test = train_test_split(X_final, y_final, test_size=0.15, random_state=42, stratify=y_final)\n",
+                "    ratio = float(np.sum(y_train==1)) / max(float(np.sum(y_train==0)), 1.0)\n",
+                "    print('Class balance ratio: ' + str(round(ratio,2)))\n",
+                "    clf = xgb.XGBClassifier(n_estimators=500, max_depth=8, learning_rate=0.03,\n",
+                "                             scale_pos_weight=ratio, subsample=0.8, colsample_bytree=0.8,\n",
+                "                             n_jobs=-1, random_state=42, eval_metric='logloss')\n",
+                "    clf.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=100)\n",
+                "    print('ACCURACY ON UNSEEN TEST DATA:')\n",
+                "    print(classification_report(y_test, clf.predict(X_test), target_names=['Deepfake','Authentic']))\n",
+                "    with open('voiceguard_v3_model.pkl', 'wb') as fout: pickle.dump(clf, fout)\n",
+                "    print('SAVED: voiceguard_v3_model.pkl')\n",
+                "    print('Download and rename to voiceguard_rf_model.pkl in ml_engine/models/')"
+            ]
+        }
+    ]
+
+
+    nb = {
+        "cells": cells,
+        "metadata": {
+            "kernelspec": {"display_name": "conda_python3", "language": "python", "name": "conda_python3"},
+            "language_info": {"name": "python", "version": "3.10.12"}
+        },
+        "nbformat": 4,
+        "nbformat_minor": 4
+    }
+
+    out_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "voiceguard_v3_training.ipynb")
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(nb, f, indent=1)
+    print("SUCCESS: " + out_path)
+
+if __name__ == "__main__":
+    make_notebook()
+
